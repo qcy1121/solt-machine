@@ -7,7 +7,7 @@ var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
 //var rename = require('gulp-rename');
 var cssnano = require('gulp-cssnano');
-//var concat = require('gulp-concat');
+var concat = require('gulp-concat');
 var browserify = require('browserify');
 var  source = require('vinyl-source-stream');
 
@@ -120,6 +120,7 @@ gulp.task('copy:main.css', function () {
                    browsers: ['last 2 versions', 'ie >= 8', '> 1%'],
                    cascade: false
                }))
+               //.pipe(gulp.)
                .pipe(gulp.dest(dirs.dist + '/css'));
 });
 
@@ -131,9 +132,11 @@ gulp.task('copy:misc', function () {
 
         // Exclude the following files
         // (other tasks will handle the copying of these files)
-        '!'+dirs.src+"/js/*.js",
+        //'!'+dirs.src+"/js/*.js",
+         '!'+dirs.src+"/js/*.js.map",
         '!'+dirs.src+"/js/*.es6",
-        '!' + dirs.src + '/css/main.css',
+        '!' + dirs.src + '/css/*.css',
+        '!' + dirs.src + '/css/*.less',
         '!' + dirs.src + '/index.html'
 
     ], {
@@ -163,23 +166,10 @@ gulp.task('lint:js', function () {
 gulp.task('convertJS', function(){
     return gulp.src('./src/js/**/*.es6')//多个文件以数组形式传入
         //.pipe(plugins.plumber())
-        //.pipe(concat('main.js'))
+        .pipe(concat('main.js'))
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(uglify())
-        .pipe(gulp.dest('./dist/js'));
-});
-gulp.task('es6to5', function() {
-    return gulp.src('./src/**/*.es6')
-        .pipe(babel({presets: ['es2015']}))
-        .pipe(gulp.dest('./src/js'));
-});
-
-gulp.task('pack', ['es6to5'], function() {
-    return gulp.src('./src/js/*.js')
-        //.pipe(browserify())
-        //.pipe(concat('app.js'))
         .pipe(uglify({
             mangle: true,//类型：Boolean 默认：true 是否修改变量名
             compress: true,//类型：Boolean 默认：true 是否完全压缩
@@ -187,11 +177,29 @@ gulp.task('pack', ['es6to5'], function() {
         }))
         .pipe(gulp.dest('./dist/js'));
 });
+//gulp.task('es6to5', function() {
+//    return gulp.src('./src/**/*.es6')
+//        .pipe(babel({presets: ['es2015']}))
+//        .pipe(concat("main.js"))
+//        .pipe(gulp.dest('./dist/js'));
+//});
+//
+//gulp.task('pack', ['es6to5'], function() {
+//    return gulp.src('./dist/js/main.js')
+//        //.pipe(browserify())
+//        //.pipe(concat('app.js'))
+//        .pipe(uglify({
+//            mangle: true,//类型：Boolean 默认：true 是否修改变量名
+//            compress: true,//类型：Boolean 默认：true 是否完全压缩
+//            preserveComments:'none'// 'all' //保留所有注释
+//        }))
+//        .pipe(gulp.dest('./dist/js'));
+//});
 
 //
 gulp.task('convertCSS', function(){
-    return gulp.src('.src/css/*.css')
-        //.pipe(concat('app.css'))
+    return gulp.src('.dist/css/*.css')
+        .pipe(concat('app.css'))
         .pipe(cssnano())
         //.pipe(rename(function(path){
         //    path.basename += '.min';
@@ -199,24 +207,6 @@ gulp.task('convertCSS', function(){
         .pipe(gulp.dest('./dist/css'));
 });
 
-//
-gulp.task('watch', function(){
-    gulp.watch('./src/css/*.css', ['convertCSS']);
-    gulp.watch('./src/js/*.js', ['convertJS', 'browserify']);
-});
-
-// browserify
-gulp.task("browserify", function () {
-    var b = browserify({
-        entries: "dist/js/main.js"
-    });
-
-    return b.bundle()
-        .pipe(source("bundle.js"))
-        .pipe(gulp.dest("dist/js"));
-});
-
-gulp.task('start', ['convertJS', 'convertCSS', 'browserify', 'watch']);
 
 // ---------------------------------------------------------------------
 // | Main tasks                                                        |
@@ -229,15 +219,18 @@ gulp.task('archive', function (done) {
         'archive:zip',
     done);
 });
-
+//gulp.task('build','clean','copy',function(done){
+//    return
+//})
 gulp.task('build', function (done) {
     runSequence(
         //['clean', 'convertJS', 'convertCSS','lint:js'],
-        ['clean', 'convertJS', 'convertCSS'],
-        //['clean'],
+        ['clean'],
         'copy',
+        //['clean'],
+        [ 'convertJS', 'convertCSS'],
+        //'copy',
         //[ 'convertJS', 'convertCSS'],
-        //[ 'pack', 'convertCSS'],
     done);
 });
 gulp.task('start', ['convertJS', 'convertCSS', 'browserify', 'watch']);
