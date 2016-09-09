@@ -12,6 +12,7 @@
             flag = true;
         });
         let cb =()=>{
+            $dom.css("top",0);
             if(flag){
                 $dom.animate({top:top},time,"linear");
             }else{
@@ -22,6 +23,17 @@
 
     }
 
-    animate();
+   $("#goBtn").on('click',()=>{
+       var dfd  =$.Deferred();
+       setTimeout(()=>{
+           dfd.resolve("-200%")
+       },10*1000)
+       animate($("#prize"),"-500%",2*1000,dfd.promise());
+   })
+    $(function(){
+        var allH=$(window).height(),sh= $("#slotPage").height();
+        console.log(sh/allH);
+        //todo 压缩
+    })
 
 })();
