@@ -8,8 +8,11 @@ var uglify = require('gulp-uglify');
 //var rename = require('gulp-rename');
 var cssnano = require('gulp-cssnano');
 var concat = require('gulp-concat');
-var browserify = require('browserify');
-var  source = require('vinyl-source-stream');
+var minifyCss = require("gulp-clean-css");
+var image=require("gulp-image");
+var less = require("gulp-less");
+//var browserify = require('browserify');
+//var  source = require('vinyl-source-stream');
 
 // Load all gulp plugins automatically
 // and attach them to the `plugins` object
@@ -177,6 +180,12 @@ gulp.task('convertJS', function(){
         }))
         .pipe(gulp.dest('./dist/js'));
 });
+//压缩图片，压缩后的文件放入dest/images
+gulp.task('image',function(){
+    gulp.src('./src/img/*.+(jpg|png|gif|svg)')
+        .pipe(image())//压缩
+        .pipe(gulp.dest('dist/img'));//输出
+});
 //gulp.task('es6to5', function() {
 //    return gulp.src('./src/**/*.es6')
 //        .pipe(babel({presets: ['es2015']}))
@@ -198,15 +207,32 @@ gulp.task('convertJS', function(){
 
 //
 gulp.task('convertCSS', function(){
-    return gulp.src('.dist/css/*.css')
-        .pipe(concat('app.css'))
-        .pipe(cssnano())
+    return gulp.src('./src/css/**/*.less')
+        .pipe(less())
+        //.pipe(concat('app.css'))
+        //.pipe(cssnano())
+        .pipe(minifyCss({
+            advanced: false,//类型：Boolean 默认：true [是否开启高级优化（合并选择器等）]
+            //compatibility: 'ie7',//保留ie7及以下兼容写法 类型：String 默认：''or'*' [启用兼容模式； 'ie7'：IE7兼容模式，'ie8'：IE8兼容模式，'*'：IE9+兼容模式]
+            //keepBreaks: true,//类型：Boolean 默认：false [是否保留换行]
+            keepSpecialComments: '*'
+            //保留所有特殊前缀 当你用autoprefixer生成的浏览器前缀，如果不加这个参数，有可能将会删除你的部分前缀
+        }))
         //.pipe(rename(function(path){
         //    path.basename += '.min';
         //}))
         .pipe(gulp.dest('./dist/css'));
 });
+// gulp.task('minify-css', function () {
+//     gulp.src('src/**/*.css') // 要压缩的css文件
+//         .pipe(minifyCss()) //压缩css
+//         .pipe(gulp.dest('dist/css'));
+// });
 
+// 监视文件的变化
+gulp.task('watch', function () {
+    return gulp.watch(['src/js/*.es6','src/css/*.less','src/index.html'], ['copy:index.html','convertJS','convertCSS']);
+});
 
 // ---------------------------------------------------------------------
 // | Main tasks                                                        |
@@ -233,5 +259,5 @@ gulp.task('build', function (done) {
         //[ 'convertJS', 'convertCSS'],
     done);
 });
-gulp.task('start', ['convertJS', 'convertCSS', 'browserify', 'watch']);
+gulp.task('start', ['build', 'watch']);
 gulp.task('default', ['build']);
