@@ -11,8 +11,6 @@ var concat = require('gulp-concat');
 var minifyCss = require("gulp-clean-css");
 var image=require("gulp-image");
 var less = require("gulp-less");
-//var browserify = require('browserify');
-//var  source = require('vinyl-source-stream');
 
 // Load all gulp plugins automatically
 // and attach them to the `plugins` object
@@ -186,24 +184,6 @@ gulp.task('image',function(){
         .pipe(image())//压缩
         .pipe(gulp.dest('dist/img'));//输出
 });
-//gulp.task('es6to5', function() {
-//    return gulp.src('./src/**/*.es6')
-//        .pipe(babel({presets: ['es2015']}))
-//        .pipe(concat("main.js"))
-//        .pipe(gulp.dest('./dist/js'));
-//});
-//
-//gulp.task('pack', ['es6to5'], function() {
-//    return gulp.src('./dist/js/main.js')
-//        //.pipe(browserify())
-//        //.pipe(concat('app.js'))
-//        .pipe(uglify({
-//            mangle: true,//类型：Boolean 默认：true 是否修改变量名
-//            compress: true,//类型：Boolean 默认：true 是否完全压缩
-//            preserveComments:'none'// 'all' //保留所有注释
-//        }))
-//        .pipe(gulp.dest('./dist/js'));
-//});
 
 //
 gulp.task('convertCSS', function(){
@@ -223,11 +203,6 @@ gulp.task('convertCSS', function(){
         //}))
         .pipe(gulp.dest('./dist/css'));
 });
-// gulp.task('minify-css', function () {
-//     gulp.src('src/**/*.css') // 要压缩的css文件
-//         .pipe(minifyCss()) //压缩css
-//         .pipe(gulp.dest('dist/css'));
-// });
 
 // 监视文件的变化
 gulp.task('watch', function () {
@@ -245,18 +220,12 @@ gulp.task('archive', function (done) {
         'archive:zip',
     done);
 });
-//gulp.task('build','clean','copy',function(done){
-//    return
-//})
 gulp.task('build', function (done) {
     runSequence(
         //['clean', 'convertJS', 'convertCSS','lint:js'],
         ['clean'],
         'copy',
-        //['clean'],
         [ 'convertJS', 'convertCSS'],
-        //'copy',
-        //[ 'convertJS', 'convertCSS'],
     done);
 });
 gulp.task('start', ['build', 'watch']);
