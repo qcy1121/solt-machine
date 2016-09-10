@@ -104,15 +104,6 @@ body{
     .bgFun("../img/bg1.png");
     background-size: 100% 100%;
 }
-.underlay{
-    background-color:rgba(0,0,0,.5);
-    with:100%;
-    height:100%;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:10;
-}
 
 section{
     width:100%;
@@ -269,18 +260,30 @@ section{
         height: .85714rem;
     }
 
-    /* 提交领奖*/
-    .commitTip{
-        width:97.06667%;
+
+.underlay{
+    background-color:rgba(0,0,0,.5);
+    with:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:10;
+    .tip{
         height:0;
-        padding-top:91.6%;
-        //position:absolute;
         margin:0 auto;
-        margin-top:33.7333%;
-        .bgFun("../img/commit.png");
         position: absolute;
         left: 0;
         right: 0;
+    }
+}
+
+    /* 提交领奖*/
+    .commitTip.tip{
+        width:97.06667%;
+        padding-top:91.6%;
+        margin-top:33.7333%;
+        .bgFun("../img/commit.png");
     }
     .input{
         background:@inputColor;
@@ -329,8 +332,88 @@ section{
         margin-bottom:7.52%;
         .bgFun("../img/commitBtn.png");
     }
+/*rule*/
+.ruleTip.tip{
+    width:97.73333%;
+    padding-top:144.933%;
+    margin-top:0;
+    .bgFun("../img/rule.png");
+    .close{
+        width:6.6848%;
+        height:0;
+        padding-top:6.6848%;
+        position:absolute;
+        top:0;
+        margin-top:29.6044%;
+        right:2.18282%;
+        .bgFun("../img/close.png");
+    }
+}
+/*no prize*/
+.noPrizeTip.tip{
+    width:94%;
+    padding-top:70.4%;
+    margin-top:44.26667%;
+    .bgFun("../img/noPrize.png");
+    div{
+        height:0;
+        padding-top:9.78723%;
+        position:absolute;
+        margin-bottom:4.68085%;
+        bottom:0;
+        opacity: 0;
+    }
+}
+.goMoreBtn{
+    width:31.6312%;
+    left:16.595744%;
+}
+.showFriendsBtn{
+    width:27.94326%;
+    right:17.87234%;
+}
+/*prize2*/
+.gotPrizeTip.tip{
+    width:94.26667%;
+    padding-top:86.8%;
+    margin-top:33.06667%;
+    .bgFun("../img/gotPrize2.png");
+    div{
+        height:0;
+        padding-top:9.47666%;
+        position:absolute;
+        bottom:0;
+        margin-bottom:8.59646%;
+        opacity: 0;
+    }
+}
+.btn1{
+    width:31.40028%;
+    left:5.23338%;
+}
+.btn2{
+    width:25.884%;
+    left:38.331%;
+}
+.btn3{
+    width:28.00565%;
+    right:6.50636%;
+}
+.prizeImg{
+    width:41.4427157%;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    margin:0 auto;
+    margin-top:42.29137%;
+    //left:21.64073%;
+}
 
-
+/*sharepage*/
+.sharePage{
+    .bgFun("../img/bg2.png");
+}
 
 @keyframes leftcraw {
     to { transform: translateX(-100%); }
