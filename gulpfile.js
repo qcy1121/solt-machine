@@ -166,16 +166,15 @@ gulp.task('lint:js', function () {
 //
 gulp.task('convertJS', function () {
     return gulp.src('./src/js/**/*.es6')//多个文件以数组形式传入
-    //.pipe(plugins.plumber())
         .pipe(concat('main.js'))
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(uglify({
-            mangle: true,//类型：Boolean 默认：true 是否修改变量名
-            compress: true,//类型：Boolean 默认：true 是否完全压缩
-            preserveComments: 'none'// 'all' //保留所有注释
-        }))
+        // .pipe(uglify({
+        //     mangle: true,//类型：Boolean 默认：true 是否修改变量名
+        //     compress: true,//类型：Boolean 默认：true 是否完全压缩
+        //     preserveComments: 'none'// 'all' //保留所有注释
+        // }))
         .pipe(gulp.dest('./dist/js'));
 });
 //压缩图片，压缩后的文件放入dest/images
@@ -189,8 +188,6 @@ gulp.task('image', function () {
 gulp.task('convertCSS', function () {
     return gulp.src('./src/css/**/*.less')
         .pipe(less())
-        //.pipe(concat('app.css'))
-        //.pipe(cssnano())
         .pipe(plugins.autoprefixer({
             browsers: ['last 2 versions', 'ie >= 9', '> 1%'],
             cascade: false

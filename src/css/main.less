@@ -1,6 +1,9 @@
 @import url(./base.less);
 
 @footerColor:#f5c519;
+@leftNumColor:#f33648;
+@floatColor:#eb7400;
+@inputColor: #e7aa6f;
 /*
  * What follows is the result of much research on cross-browser styling.
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
@@ -99,6 +102,7 @@ html, body {
 
 body{
     .bgFun("../img/bg1.png");
+    background-size: 100% 100%;
 }
 .underlay{
     background-color:rgba(0,0,0,.5);
@@ -107,6 +111,7 @@ body{
     position:absolute;
     top:0;
     left:0;
+    z-index:10;
 }
 
 section{
@@ -118,6 +123,7 @@ section{
 }
 .slotPage{
     height:auto;
+}
     .header{
         width:100%;
         height:0;
@@ -170,6 +176,36 @@ section{
         margin-bottom:2.8%;
         left:8.1333%;
     }
+    .marquee{
+        .lineHeight(1.464rem);
+        background-color: @floatColor;
+        overflow:hidden;
+        position:absolute;
+        left:0;
+        right:0;
+        margin:0 auto;
+        div{
+            font-size:.949285rem;
+            color:#fff;
+            float:left;
+            white-space: nowrap;
+            margin-left:50%;
+            animation: leftcraw 14s linear infinite;
+        }
+    }
+    .floatTop{
+        width:77.333%;
+        top:0;
+        margin-top:10.5333%;
+        border-radius:5px;
+    }
+
+    .floatBottom{
+        width:69.6%;
+        bottom:0;
+        margin-bottom:21.73%;
+        border-radius:1.464rem;
+    }
     .goBtnContent{
         width:35.2%;
         height:0;
@@ -209,10 +245,96 @@ section{
             margin-top:-7.6%;
         }
     }
+    .invite{
+        width:41.467%;
+        height:0;
+        padding-top:10.4%;
+        position:absolute;
+        left:0;
+        bottom:0;
+        margin: 0 0 1.2% 9.067%;
+        .bgFun("../img/invite.png");
+    }
+    .leftNum{
+        font-size:.85714rem;
+        color: @leftNumColor;
+        width: 4.733%;
+        text-align: center;
+        position: absolute;
+        left: 63.6%;
+        bottom: 0;
+        margin-bottom: 5.4%;
+        line-height: .85714rem;
+        font-weight: 600;
+        height: .85714rem;
+    }
+
+    /* 提交领奖*/
+    .commitTip{
+        width:97.06667%;
+        height:0;
+        padding-top:91.6%;
+        //position:absolute;
+        margin:0 auto;
+        margin-top:33.7333%;
+        .bgFun("../img/commit.png");
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+    .input{
+        background:@inputColor;
+        position:absolute;
+        left:35.097%;
+        height:0;
+        padding-top:6.6852%;
+        border-radius:5px;
+        top:0;
+        overflow:hidden;
+        input{
+            display:block;
+            //float:left;
+            .lineHeight(1.714285rem);
+            font-size:1.133928rem;
+            vertical-align: middle;
+            text-align: left;
+            /* width: auto; */
+            position: absolute;
+            top: 0;
+            border: 0;
+            background: transparent;
+        }
+    }
+    .nameInput{
+        width:26.4624%;
+        margin-top:43.254%;/*43.454%;*/
+    }
+    .phoneInput{
+        width:36.933%;
+        margin-top:51.64986%;/*51.94986%;*/
+    }
+    .idCardInput{
+        width:45.333%;
+        margin-top:60.14568%;/*60.44568%;*/
+    }
+    .commitBtn{
+        width:30.64%;
+        height:0;
+        padding-top:9.47%;
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        margin:0 auto;
+        margin-bottom:7.52%;
+        .bgFun("../img/commitBtn.png");
+    }
+
+
+
+@keyframes leftcraw {
+    to { transform: translateX(-100%); }
 }
-
-
-
 
 
 
@@ -305,13 +427,17 @@ section{
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
+@media screen and (max-width: 750px) {
+    html{font-size:160%;}
+}
+@media screen and (max-width: 450px) {
+    html{font-size:100%;}
+}
+@media screen and (max-width: 330px) {
+    html{font-size:80%;}
+}
+@media screen and (min-width: 750px) {
+    html{font-size:200%;}
 }
 
-@media print,
-(min-resolution: 1.25dppx),
-(min-resolution: 120dpi) {
-    /* Style adjustments for high resolution devices */
-}
 
