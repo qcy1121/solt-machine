@@ -323,6 +323,8 @@
         $mainPage.siblings().addClass("hidden");
 
         // showNeedHelp();
+        //var item  =prize[prize_id];
+        // showPrize(item);
 
     })
 
