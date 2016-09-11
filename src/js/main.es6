@@ -26,31 +26,53 @@
         run(cb);
 
     }
+    var prize5={
+        top:"-600%",
+        0:{
+            pos:"-500%",
+        },
+        1:{
+            pos:"-400%",
+        },
+        2:{
+            pos:"-300%",
+        },
+        3:{
+            pos:"-200%",
+        },
+        4:{
+            pos:"-100%",
+        },
+        5:{
+            pos:"0",
+        }
+
+    }
 
    $("#goBtn").on('click',()=>{
        var dfd  =$.Deferred();
        setTimeout(()=>{
            dfd.resolve("-200%");
        },10*1000)
-       animate($("#prize"),"top","-500%",2*1000,dfd.promise());
+       animate($("#prize"),"top","-600%",2*1000,dfd.promise());
    })
-    // animate($("#floatTop"),"margin-left","-100%",2*1000);
-    // animate($("#floatBottom"),"margin-left","-100%",2*1000);
-    // $(function(){
-    //     var $cBody = $("#slotPage");
-    //     var allH=$(window).height(),allW=$(window).width(),sh= $cBody.height();
-    //     // console.log(sh/allH);
-    //     if(allH>allW) {
-    //         var scale = allH / sh;
-    //         $cBody.css({
-    //             "-webkit-transform": "scaleY(" + scale + ")", "-webkit-transform-origin": "0 0 0",
-    //             "-ms-transform": "scaleY(" + scale + ")", "-ms-transform-origin": "0 0 0",
-    //             "-moz-transform": "scaleY(" + scale + ")", "-moz-transform-origin": "0 0 0",
-    //             "transform": "scaleY(" + scale + ")", "transform-origin": "0 0 0",
-    //         });
-    //     }else{
-    //
-    //     }
-    // })
+    // $("#floatTop")
+    // $("#floatBottom")
+    $(function(){
+        var $cBody = $("#slotPage");
+        var allH=$(window).height(),allW=$(window).width(),sh= $cBody.height();
+        // console.log(sh/allH);
+        if(allH>allW) {
+            var scale = allH / sh;
+            $cBody.css({
+                "-webkit-transform": "scaleY(" + scale + ")", "-webkit-transform-origin": "0 0 0",
+                "-ms-transform": "scaleY(" + scale + ")", "-ms-transform-origin": "0 0 0",
+                "-moz-transform": "scaleY(" + scale + ")", "-moz-transform-origin": "0 0 0",
+                "transform": "scaleY(" + scale + ")", "transform-origin": "0 0 0",
+            });
+        }else{
+
+        }
+    })
 
 })();
