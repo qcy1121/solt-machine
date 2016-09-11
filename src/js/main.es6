@@ -180,7 +180,7 @@
             lock = false;
         })
     };
-    var $underlay = $("#underlay"), $sharePage = $("#sharePage");
+    var $underlay = $("#underlay"), $sharePage = $("#sharePage"),$slotPage=$("#slotPage");
     var showTip = ($dom)=> {
         $dom.removeClass("hidden").siblings().addClass("hidden");
     }
@@ -299,20 +299,12 @@
 
 
     $(function () {
-        //后续会加一个加载中的loading页。
-
-        var $mainPage = $("#slotPage");//根据不同的状态选取mainPage
-
-        $mainPage.siblings().addClass("hidden");
-
-        // showNeedHelp();
-
-        var $cBody = $mainPage;
+        var $cBody = $slotPage;
         var allH = $(window).height(), allW = $(window).width(), sh = $cBody.height();
         // console.log(sh/allH);
         if (allH > allW) {
             var scale = allH / sh;
-            $cBody.css({
+            $("#slotPage").css({
                 "-webkit-transform": "scaleY(" + scale + ")", "-webkit-transform-origin": "0 0 0",
                 "-ms-transform": "scaleY(" + scale + ")", "-ms-transform-origin": "0 0 0",
                 "-moz-transform": "scaleY(" + scale + ")", "-moz-transform-origin": "0 0 0",
@@ -321,6 +313,17 @@
         } else {
 
         }
+
+
+
+        //后续会加一个加载中的loading页。
+
+        var $mainPage = $("#slotPage");//根据不同的状态选取mainPage
+
+        $mainPage.siblings().addClass("hidden");
+
+        // showNeedHelp();
+
     })
 
 })();
