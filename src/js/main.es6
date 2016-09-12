@@ -3,7 +3,9 @@
     var delay = 1000;//毫秒
     var soltNum = 10;
     // 仅供调试
-    var baseUrl = "http://mothersday.tangguo360.com";
+    var debug = true;
+    // 仅供调试
+    var baseUrl = debug ? "" : "http://mothersday.tangguo360.com";
     var scope = "/user"; // 会有2种：user 或者 member
 
     var webApi = (()=> {
@@ -310,7 +312,13 @@
         helpBtnHandler = ()=> {
             if (helpLock)return;
             helpLock = true;
-            webApi.helpTa().done(showHelped).fail(()=> {
+            webApi.helpTa().done((res) => {
+                if (res.error == 1) {
+                    alert(res.message);
+                    return;
+                }
+                showHelped();
+            }).fail(()=> {
                 alert("请重试！")
             }).always(()=>helpLock = false);
 
@@ -358,8 +366,17 @@
 
         }
         var $mainPage ;
-            if( window.hasVoted!=0){//已抽过
-                var prizeId =  window.userPrizeId||0,item = prize[prizeId]||prize[0];
+            if(window.isSharedPage){
+                $("#needHelpP").text("你的好友" + window.voteUserName + "正在参加");
+                $("#helpedP").text("已成功帮好友"+ window.voteUserName + "增加");
+                if(window.hasVoted){//已助力
+                    showHelped();
+                }else {
+                    showNeedHelp();
+                }
+                $mainPage = $sharePage;
+            }else if( window.userPrizeId != 0 ){//已抽过
+                var prizeId =  window.userPrizeId || 0,item = prize[prizeId]||prize[0];
                 if(item.index==0){
                     showNoPrize(item);
                 }else{
@@ -368,7 +385,7 @@
                 }
                 $mainPage = $underlay;
             }else{
-                $mainPage = $("#slotPage");//根据不同的状态选取mainPage
+                $mainPage = $slotPage;//根据不同的状态选取mainPage
             }
 
             $mainPage.siblings().addClass("hidden");
