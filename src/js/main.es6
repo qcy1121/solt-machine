@@ -1,7 +1,8 @@
 (function () {
     var basePath = window.basePath || "./";
     var delay = 1000;//毫秒
-    var soltNum = 10;
+    var $leftNum = $("#leftNum"),slotNum = $leftNum.text();
+    var common = {};
     // 仅供调试
     var debug = true;
     // 仅供调试
@@ -162,12 +163,13 @@
     }
     var runSlot = ()=> {
         if (lock)return;
-        if (soltNum < 1) {
+        if (slotNum < 1) {
             showShare();
             return;
         }
         lock = true;
-        soltNum--;
+        slotNum--;
+        $leftNum.text(slotNum);
         var dfd = $.Deferred();
         var finish = animate($("#prize"), "top", prize.top, delay, dfd.promise());
         var item, timer = runTime();
@@ -242,7 +244,8 @@
             }else{
                 $gotPrize.removeClass('got');
             }
-            showTip($gotPrize);;
+            showTip($gotPrize);
+            common.prizeItem = item;
             $underlay.removeClass("hidden");
         },
         showNoPrize = (item)=> {
@@ -278,6 +281,7 @@
             if (ok) {
                 webApi.commitInfo(name, phone, idNo).done(()=> {
                     //todo 提交成功之后如何？
+                    showPrize(common.prizeItem,true);
                 }).fail(()=> {
                     alert("提交失败，请重试!");
                 }).always(()=> {
@@ -294,7 +298,7 @@
     $("#btn2").on("click", showCommit);
     $("#showFriendsBtn,#btn3").on("click", showFriendsList);
     $("#closeList").on("click", ()=>$sharePage.addClass("hidden"));
-    $("#rule .close").on('click', ()=>$underlay.addClass("hidden"));
+    $("#rule .close,#noPrize .close,#gotPrize .close").on('click', ()=>$underlay.addClass("hidden"));
     $("#commitBtn").on("click", commitHandler);
     $("#shareTip").on('click',()=> $("#shareTip").addClass("hidden"));
 
@@ -365,7 +369,7 @@
         } else {
 
         }
-        var $mainPage ;
+        var $mainPage ,showSlotPage=false;
             if(window.isSharedPage){
                 $("#needHelpP").text("你的好友" + window.voteUserName + "正在参加");
                 $("#helpedP").text("已成功帮好友"+ window.voteUserName + "增加");
@@ -384,12 +388,13 @@
                     showPrize(item,got);
                 }
                 $mainPage = $underlay;
+                showSlotPage=true;
             }else{
                 $mainPage = $slotPage;//根据不同的状态选取mainPage
             }
 
             $mainPage.siblings().addClass("hidden");
-
+            showSlotPage&&$slotPage.removeClass("hidden");
             // showNeedHelp();
             //var item  =prize[prize_id];
             // showPrize(item);showPrize(item,true);//已领取
