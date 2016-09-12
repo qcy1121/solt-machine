@@ -4,10 +4,10 @@
     var soltNum = 10;
     var webApi = (()=> {
         var noPrize = ()=> {
-                return $.ajax();
+                return $.ajax({url: "/user/decrease", type: "GET"});
             },
             loadPrize = ()=> {
-                return $.ajax();
+                return $.ajax({url: "/user/lucky", type: "GET"});
             },
             commitInfo = (name, phone, idNo)=> {
                 let data = {
@@ -15,9 +15,10 @@
                     phone: phone,
                     idNo: idNo
                 }
-                return $.ajax();
+                return $.ajax({url: "/user/accept", type: "GET"});
             }, helpTa = ()=> {
-                return $.ajax();
+                // TODO: 需要得到ID
+                return $.ajax({url: "/user/vote/2", type: "GET"});
             }
         return {
             noPrize: noPrize,
@@ -194,19 +195,25 @@
         showRule = (noClose)=> {
             var $rule = $("#rule");
             showTip($rule);
-            if (!noClose) {
-                $rule.removeClass("noClose");
-            } else {
+            if (noClose===true) {
                 $rule.addClass("noClose");
+            } else {
+                $rule.removeClass("noClose");
             }
             $underlay.removeClass("hidden");
         },
         showShare = ()=> {
             $("#shareTip").removeClass('hidden');
         },
-        showPrize = (item)=> {
+        showPrize = (item,got)=> {//got ,已经领取过的为true
             var img = basePath + "/img/" + item.img;
-            showTip($("#gotPrize"));
+            var $gotPrize = $("#gotPrize");
+            if(got){
+                $gotPrize.addClass("got");
+            }else{
+                $gotPrize.removeClass('got');
+            }
+            showTip($gotPrize);;
             $underlay.removeClass("hidden");
         },
         showNoPrize = (item)=> {
@@ -247,6 +254,8 @@
                 }).always(()=> {
                     commitLock = false;
                 })
+            }else{
+                commitLock = false;
             }
         }
 
@@ -258,7 +267,7 @@
     $("#closeList").on("click", ()=>$sharePage.addClass("hidden"));
     $("#rule .close").on('click', ()=>$underlay.addClass("hidden"));
     $("#commitBtn").on("click", commitHandler);
-
+    $("#shareTip").on('click',()=> $("#shareTip").addClass("hidden"));
 
     // 好友打开部分
     // showRule(true);//背景为规则;
@@ -299,6 +308,14 @@
 
 
     $(function () {
+
+
+
+
+
+
+
+        $(window).on('load',function(){
         var $cBody = $slotPage;
         var allH = $(window).height(), allW = $(window).width(), sh = $cBody.height();
         // console.log(sh/allH);
@@ -313,18 +330,17 @@
         } else {
 
         }
+            //后续会加一个加载中的loading页。
 
+            var $mainPage = $("#slotPage");//根据不同的状态选取mainPage
 
+            $mainPage.siblings().addClass("hidden");
 
-        //后续会加一个加载中的loading页。
-
-        var $mainPage = $("#slotPage");//根据不同的状态选取mainPage
-
-        $mainPage.siblings().addClass("hidden");
-
-        // showNeedHelp();
-        //var item  =prize[prize_id];
-        // showPrize(item);
+            // showNeedHelp();
+            //var item  =prize[prize_id];
+            // showPrize(item);showPrize(item,true);//已领取
+            // $("#loading").hide();
+        })
 
     })
 
