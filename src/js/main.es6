@@ -288,7 +288,7 @@
 
     $("#goBtn").on('click', runSlot);
     $("#ruleBtn").on("click", showRule);
-    $("#invite,#goMoreBtn,#btn").on("click", showShare);
+    $("#invite,#goMoreBtn,#btn1").on("click", showShare);
     $("#btn2").on("click", showCommit);
     $("#showFriendsBtn,#btn3").on("click", showFriendsList);
     $("#closeList").on("click", ()=>$sharePage.addClass("hidden"));
