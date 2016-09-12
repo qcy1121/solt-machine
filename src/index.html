@@ -17,6 +17,17 @@
     <script>
         window.basePath="http://7xjy44.com1.z0.glb.clouddn.com";
         window.prizeType="prize4";
+
+        // 助力页面: 通过这个字段拿要助力的user_id
+        window.voteUserId = 2;
+        // 助力页面: 通过这个字段到是否已经投资 1真 0 假
+        window.hasVoted = 0;
+
+        // 抽奖页面: 是否已抽中过奖品，此时要直接显示弹框，提醒用户去兑奖
+        window.userPrizeId = 4;
+        // 抽奖页面: 是否已兑奖，此时要显示弹框，不给用户操作
+        window.userPrizeAccepted = 0;
+
     </script>
     <body>
         <!--[if lt IE 8]>
@@ -103,16 +114,11 @@
         </section>
         <section class="shareTip " id="shareTip"></section>
 
-        <!-- 通过这个字段拿要助力的user_id -->
-        <input type="hidden" name="vote_user_id" id= "vote_user_id" value="1">
-
-
-
 
         <!--<script src="https://code.jquery.com/jquery-{{JQUERY_VERSION}}.min.js"></script>-->
         <!--<script>window.jQuery || document.write('<script src="js/vendor/jquery-{{JQUERY_VERSION}}.min.js"><\/script>')</script>-->
         <script src="js/vendor/jquery-{{JQUERY_VERSION}}.min.js"></script>
-        <script src="js/plugins.js"></script>
+        <!--<script src="js/plugins.js"></script>-->
         <script src="js/main.js"></script>
 
     </body>

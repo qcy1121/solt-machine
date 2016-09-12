@@ -2,12 +2,16 @@
     var basePath = window.basePath || "./";
     var delay = 1000;//毫秒
     var soltNum = 10;
+    // 仅供调试
+    var baseUrl = "http://mothersday.tangguo360.com";
+    var scope = "/user"; // 会有2种：user 或者 member
+
     var webApi = (()=> {
         var noPrize = ()=> {
-                return $.ajax({url: "/user/decrease", type: "GET"});
+                return $.ajax({url: baseUrl + scope + "/decrease", type: "GET"});
             },
             loadPrize = ()=> {
-                return $.ajax({url: "/user/lucky", type: "GET"});
+                return $.ajax({url: baseUrl + scope + "/lucky", type: "GET"});
             },
             commitInfo = (name, phone, idNo)=> {
                 let data = {
@@ -15,10 +19,17 @@
                     phone: phone,
                     idNo: idNo
                 }
-                return $.ajax({url: "/user/accept", type: "GET"});
+                return $.ajax({
+                    url: baseUrl + scope + "/accept",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]')
+                            .attr('content'))},
+                    data: data,
+                    type: "POST"
+                });
             }, helpTa = ()=> {
-                // TODO: 需要得到ID
-                return $.ajax({url: "/user/vote/2", type: "GET"});
+                let user_id = window.voteUserId;
+                return $.ajax({url: baseUrl + scope + "/vote/" + user_id, type: "GET"});
             }
         return {
             noPrize: noPrize,
@@ -67,61 +78,61 @@
         }
     var prize5 = {
         top: "-600%",
-        odds: 0.5,//中奖率
+        odds: 1,//中奖率
         0: {//未中奖
             pos: "-500%",
             index: 0
             // img:
         },
-        1: {
+        6: {
             pos: "-400%",
             img: "interest.png",
             index: 1
         },
-        2: {
+        7: {
             pos: "-300%",
             img: "korea.png",
             index: 2
         },
-        3: {
+        8: {
             pos: "-200%",
             img: "disney.png",
             index: 3
         },
-        4: {
+        9: {
             pos: "-100%",
             img: "redbag.png",
             index: 4
         },
-        5: {
+        10: {
             pos: "0",
             img: "oilCard.png",
             index: 5
         }
     }, prize4 = {
-        odds: 1,//中奖率
+        odds: 1,//中奖率，缺未中奖
         top: "-600%",
-        0: {
+        0: {//未中奖
             pos: '-400%',
             index: 0
             // img:
         },
-        1: {
+        2: {
             pos: '-300%',
             img: "travel.png",
             index: 1
         },
-        2: {
+        1: {
             pos: '-200%',
             img: "iphone.png",
             index: 2
         },
-        3: {
+        4: {
             pos: '-100%',
             img: 'ticket.png',
             index: 3
         },
-        4: {
+        3: {
             pos: '0',
             img: 'oilCard.png',
             index: 4
@@ -166,7 +177,23 @@
         }
         if (isHavePrize(prize)) {
             webApi.loadPrize().done((res)=> {
-                item = prize[res.data.prizeId];//todo奖品的id;
+                // 返回格式为 {"error": 0, "prize_id": prize_id}
+                // 或者错误 {"error": 1, "message": 没有可用次数 }
+                // 如果返回 prize_id 为 0， 则表示未中奖
+                // 奖品ID 是存在同一个表中的，所以ID是从1 -> 9
+
+                // 有错误就直接返回
+                if (res.error == 1) {
+                    alert(res.message);
+                    noprize()
+                    return
+                }
+                if (res.prize_id == 0) {
+                    noprize()
+                    return
+                }
+
+                item = prize[res.prize_id];//todo奖品的id;
                 loadImg(basePath + "/img/" + item.img).done(()=> {
                     timer.done(()=> {
                         dfd.resolve(item);
@@ -330,9 +357,19 @@
         } else {
 
         }
-            //后续会加一个加载中的loading页。
-
-            var $mainPage = $("#slotPage");//根据不同的状态选取mainPage
+        var $mainPage ;
+            if( window.hasVoted!=0){//已抽过
+                var prizeId =  window.userPrizeId||0,item = prize[prizeId]||prize[0];
+                if(item.index==0){
+                    showNoPrize(item);
+                }else{
+                    let got = window.userPrizeAccepted==0?false:true;
+                    showPrize(item,got);
+                }
+                $mainPage = $underlay;
+            }else{
+                $mainPage = $("#slotPage");//根据不同的状态选取mainPage
+            }
 
             $mainPage.siblings().addClass("hidden");
 
