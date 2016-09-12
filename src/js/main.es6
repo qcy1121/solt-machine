@@ -48,21 +48,32 @@
             time = time || 1000;
             let flag = false;
             let moveObj = {};
+            let oldTop = top;
             moveObj[dir] = top;
             let run = (cb)=> {
                 $dom.animate(moveObj, time, "linear", cb)
             }
-            dfd && dfd.done((newTop, newTime)=> {
-                time = newTime || time;
-                top = newTop || top;
+            dfd && dfd.done((item)=> {
+
+                // time = newTime || time;
+                top = item.pos;
                 flag = true;
             });
             let cb = ()=> {
                 $dom.css(dir, 0);
                 if (flag) {
                     moveObj[dir] = top;
-                    $dom.animate(moveObj, time, "linear");
-                    defer.resolve();
+                    let newTime =time;
+                    let finish = ()=>setTimeout(()=>defer.resolve(),delay);
+                    if(top==0){
+                        newTime=time*2;
+                        $dom.animate({"top":oldTop}, newTime, "linear",()=>{$dom.css(moveObj);finish()});
+                    }else{
+                        newTime = time*1.5;
+                        time = time*2*((Number(top.substr(1,1)))/5);
+                        $dom.animate(moveObj, newTime, "linear",()=>$dom.animate(moveObj,time,"linear",finish));
+
+                    }
                 } else {
                     run(cb)
                 }
