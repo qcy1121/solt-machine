@@ -249,6 +249,7 @@
         },
         showPrize = (item,got)=> {//got ,已经领取过的为true
             var img = basePath + "/img/" + item.img;
+            $("#prizeImg").attr('src',img);
             var $gotPrize = $("#gotPrize");
             if(got){
                 $gotPrize.addClass("got");
@@ -260,7 +261,7 @@
             $underlay.removeClass("hidden");
         },
         showNoPrize = (item)=> {
-            var img = basePath + "/img/" + item.img;
+            // var img = basePath + "/img/" + item.img;
             showTip($("#noPrize"));
             $underlay.removeClass("hidden");
         },
