@@ -4,10 +4,8 @@
     var $leftNum = $("#leftNum"),slotNum = $leftNum.text();
     var common = {};
     // 仅供调试
-    var debug = true;
-    // 仅供调试
-    var baseUrl = debug ? "" : "http://mothersday.tangguo360.com";
-    var scope = "/user"; // 会有2种：user 或者 member
+    var baseUrl = "/";
+    var scope = window.scope || "/user"; // 会有2种：user 或者 member
 
     var webApi = (()=> {
         var noPrize = ()=> {
