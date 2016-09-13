@@ -358,61 +358,58 @@
     $("#noJoinBtn").on('click', noJoinBtnHandler);
 
 
-    $(function () {
+    // document.body.addEventListener('touchmove', (e)=>e.preventDefault(),false);
+    // $("#frendList").on('touchmove',"ul",(e)=>{
+    //     var scroll = $(this).scrollTop() ;
+    //     if(scroll==0){
+    //         e.preventDefault();
+    //     }
+    //     e.stopPropagation();
+    // });
 
-
-
-
-
-
-
-        $(window).on('load',function(){
-        var $cBody = $slotPage;
-        var allH = $(window).height(), allW = $(window).width(), sh = $cBody.height();
-        // console.log(sh/allH);
-        if (allH > allW) {
-            var scale = allH / sh;
-            $("#slotPage").css({
-                "-webkit-transform": "scaleY(" + scale + ")", "-webkit-transform-origin": "0 0 0",
-                "-ms-transform": "scaleY(" + scale + ")", "-ms-transform-origin": "0 0 0",
-                "-moz-transform": "scaleY(" + scale + ")", "-moz-transform-origin": "0 0 0",
-                "transform": "scaleY(" + scale + ")", "transform-origin": "0 0 0",
-            });
-        } else {
-
+    var $mainPage ,showSlotPage=false;
+    if(window.isSharedPage){
+        $("#needHelpP").text("你的好友" + window.voteUserName + "正在参加");
+        $("#helpedP").text("已成功帮好友"+ window.voteUserName + "增加");
+        if(window.hasVoted){//已助力
+            showHelped();
+        }else {
+            showNeedHelp();
         }
-        var $mainPage ,showSlotPage=false;
-            if(window.isSharedPage){
-                $("#needHelpP").text("你的好友" + window.voteUserName + "正在参加");
-                $("#helpedP").text("已成功帮好友"+ window.voteUserName + "增加");
-                if(window.hasVoted){//已助力
-                    showHelped();
-                }else {
-                    showNeedHelp();
-                }
-                $mainPage = $sharePage;
-            }else if( window.userPrizeId != 0 ){//已抽过
-                var prizeId =  window.userPrizeId || 0,item = prize[prizeId]||prize[0];
-                if(item.index==0){
-                    showNoPrize(item);
-                }else{
-                    let got = window.userPrizeAccepted==0?false:true;
-                    showPrize(item,got);
-                }
-                $mainPage = $underlay;
-                showSlotPage=true;
-            }else{
-                $mainPage = $slotPage;//根据不同的状态选取mainPage
-            }
+        $mainPage = $sharePage;
+    }else if( window.userPrizeId != 0 ){//已抽过
+        var prizeId =  window.userPrizeId || 0,item = prize[prizeId]||prize[0];
+        if(item.index==0){
+            showNoPrize(item);
+        }else{
+            let got = window.userPrizeAccepted==0?false:true;
+            showPrize(item,got);
+        }
+        $mainPage = $underlay;
+        showSlotPage=true;
+    }else{
+        $mainPage = $slotPage;//根据不同的状态选取mainPage
+    }
 
-            $mainPage.siblings().addClass("hidden");
-            showSlotPage&&$slotPage.removeClass("hidden");
-            // showNeedHelp();
-            //var item  =prize[prize_id];
-            // showPrize(item);showPrize(item,true);//已领取
-            // $("#loading").hide();
+    $mainPage.siblings("section").addClass("hidden");
+    showSlotPage&&$slotPage.removeClass("hidden");
+        $(window).on('load',function(){
+            if(showSlotPage) {
+                var $cBody = $slotPage;
+                var allH = $(window).height(), allW = $(window).width(), sh = $cBody.height();
+                // console.log(sh/allH);
+                if (allH > allW) {
+                    var scale = allH / sh;
+                    $("#slotPage").css({
+                        "-webkit-transform": "scaleY(" + scale + ")", "-webkit-transform-origin": "0 0 0",
+                        "-ms-transform": "scaleY(" + scale + ")", "-ms-transform-origin": "0 0 0",
+                        "-moz-transform": "scaleY(" + scale + ")", "-moz-transform-origin": "0 0 0",
+                        "transform": "scaleY(" + scale + ")", "transform-origin": "0 0 0",
+                    });
+                }
+            }
+            $("#loading").hide();
         })
 
-    })
 
 })();
